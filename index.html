@@ -195,7 +195,7 @@
       <div class="rule"></div>
     </div>
     <div class="paquetes" id="pkgGrid"></div>
-    <p class="pkg-note">Elige tus bebidas de todo el menú: coctelería, shots y mocktails. Precios en MXN. El precio final depende de las bebidas elegidas y se suman viáticos según la ubicación del evento.</p>
+    <p class="pkg-note">Elige tus bebidas de todo el menú: coctelería, shots y mocktails. Arma tu selección y cotízala por WhatsApp; el costo final depende de las bebidas elegidas y la ubicación del evento.</p>
   </div>
 </section>
 
@@ -246,7 +246,7 @@
       WhatsApp: <a id="waText" href="#"></a><br>
       Instagram: <a id="ig" href="https://www.instagram.com/balammixologia" target="_blank" rel="noopener">@balammixologia</a>
     </div>
-    <div class="tiny">Menú sujeto a disponibilidad. Precios en MXN.</div>
+    <div class="tiny">Menú sujeto a disponibilidad.</div>
   </div>
 </footer>
 
@@ -278,7 +278,7 @@
   ];
   var CATS=[
     {name:"Tequila",ico:"Tq",drinks:[
-      ["Margarita Clásica","Tequila, naranja y limón con escarchado picante."],
+      ["Margarita Clásica","Tequila, naranja y limón con escarchado de sal."],
       ["Margarita Frutos Rojos","Fresa, zarzamora y frambuesa."],
       ["Margarita Maracuyá","Pulpa de maracuyá, agridulce tropical."],
       ["Margarita Fresa Spicy","Fresa con un toque de chile, escarchado picante."],
@@ -307,11 +307,11 @@
     ]}
   ];
   var SHOTS=[
-    ["CH'ÒOJ","Ch’òoj (Azul). La intensidad del vodka se fusiona con el dulzor cítrico del Blue Curaçao y la frescura del limón,"],
-    ["OOK","OOK (MANGO). La dulzura tropical del mango se fusiona con ron y cítricos, acompañados de un toque acidito y picosito de Tajín y chamoy. Un shot lleno de sabor, perfecto para quienes disfrutan los contrastes."],
-    ["KAÁPEJ","Kaápej (Café). La intensidad del café se combina con la cremosidad del Baileys y un sutil toque de naranja, creando un shot dulce, suave y lleno de carácter."],
-    ["K'IIN","K’íin (Sol). La intensidad del tequila se fusiona con la frescura cítrica de la naranja y la dulzura de la granadina, creando una mezcla frutal y vibrante que evoca los cálidos tonos del amanecer. Coronado con una cereza para darle el toque final."],
-    ["CH'OCH'OK","Ch’och’ok (Cacahuate). La intensidad del whisky se combina con el inconfundible sabor del mazapán, cocoa y una mezcla cremosa de Baileys y leche, endulzada con un toque de miel. Un shot suave, goloso y lleno de tradición."]
+    ["CH'ÒOJ","(Azul) La intensidad del vodka se fusiona con el dulzor cítrico del Blue Curaçao y la frescura del limón."],
+    ["OOK","(Mango) La dulzura tropical del mango se fusiona con ron y cítricos, acompañados de un toque acidito y picosito de Tajín y chamoy. Un shot lleno de sabor, perfecto para quienes disfrutan los contrastes."],
+    ["KAÁPEJ","(Café) La intensidad del café se combina con la cremosidad del Baileys y un sutil toque de naranja, creando un shot dulce, suave y lleno de carácter."],
+    ["K'ÍIN","(Sol) La intensidad del tequila se fusiona con la frescura cítrica de la naranja y la dulzura de la granadina, creando una mezcla frutal y vibrante que evoca los cálidos tonos del amanecer. Coronado con una cereza para darle el toque final."],
+    ["CH'OCH'OK","(Cacahuate) La intensidad del whisky se combina con el inconfundible sabor del mazapán, cocoa y una mezcla cremosa de Baileys y leche, endulzada con un toque de miel. Un shot suave, goloso y lleno de tradición."]
   ];
   var MOCKS=[
     ["Limonada","Limón natural, refrescante."],
@@ -320,8 +320,8 @@
     ["Limonada Frutos Rojos Hierbabuena","Berries y hierbabuena."],
     ["Limonada Maracuyá Hierbabuena","Maracuyá y hierbabuena."],
     ["Piñada","Piña y coco, sin alcohol."],
-    ["Pantera Rosa","Piña colada con un toque agridulce."],
-    ["Rusa","Refresco de toronja con citricos."],
+    ["Pantera Rosa","Piñada con un toque agridulce."],
+    ["Rusa","Refresco de toronja con cítricos."],
     ["Frozen Mango Spicy","Mango con chile."],
     ["Frozen Fresa Spicy","Fresa con chile."],
     ["Frozen Tamarindo","Tamarindo agridulce."]
@@ -336,7 +336,7 @@
   var grid=document.getElementById("pkgGrid");
   PAQUETES.forEach(function(p){
     var d=document.createElement("div");d.className="pkg";d.dataset.tier=p.tier;
-    d.innerHTML='<div class="tier">'+p.tier+'</div><div class="price">'+p.price+'</div><ul>'+p.li.map(function(x){return "<li>"+x+"</li>";}).join("")+'</ul><button class="pick">Elegir paquete</button>';
+    d.innerHTML='<div class="tier">'+p.tier+'</div><ul>'+p.li.map(function(x){return "<li>"+x+"</li>";}).join("")+'</ul><button class="pick">Elegir paquete</button>';
     d.querySelector(".pick").addEventListener("click",function(){pkg=(pkg===p.tier)?null:p.tier;renderPkg();save();updateTray();});
     grid.appendChild(d);
   });
