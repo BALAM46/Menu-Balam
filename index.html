@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
 <style>
-  /* tipografía de menú */
+  /* Carta nocturna de coctelería: negro de selva + dorado ámbar (jaguar), tipografía de menú */
   :root{
     --bg:#0d0f0c; --bg2:#14160f; --panel:#181b12;
     --gold:#C9A24B; --gold-soft:#E7CE88; --jade:#5E9B7A;
@@ -148,6 +148,24 @@
   .tray-list li .x:hover{color:var(--gold);}
   .tray-clear{background:none;border:none;color:var(--muted);font-size:.78rem;text-decoration:underline;cursor:pointer;padding:8px 16px 4px;}
 
+  /* ---- MODAL DATOS DEL EVENTO ---- */
+  .modal{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:18px;}
+  .modal[hidden]{display:none;}
+  .modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(2px);}
+  .modal-card{position:relative;z-index:1;width:100%;max-width:420px;background:var(--panel);border:1px solid var(--gold);
+    border-radius:16px;padding:26px 22px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 20px 60px rgba(0,0,0,.6);
+    max-height:92vh;overflow-y:auto;}
+  .modal-card h3{font-family:var(--serif);font-size:1.7rem;color:var(--cream);letter-spacing:.02em;}
+  .modal-sub{color:var(--muted);font-size:.86rem;margin:4px 0 18px;}
+  .modal-x{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--muted);font-size:1.7rem;line-height:1;cursor:pointer;}
+  .modal-x:hover{color:var(--gold);}
+  .fld{display:block;margin-bottom:14px;}
+  .fld span{display:block;font-family:var(--sans);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+  .fld input,.fld select{width:100%;background:rgba(13,15,12,.6);border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;color:var(--cream);font-family:var(--sans);font-size:.95rem;outline:none;}
+  .fld input:focus,.fld select:focus{border-color:var(--gold);}
+  .modal-send{width:100%;justify-content:center;margin-top:8px;padding:14px;}
+
   /* En celular ocultamos los enlaces de ancla pero dejamos visible el botón Reservar */
   @media (max-width:720px){
     .navin{flex-wrap:wrap;height:auto;padding-block:9px;gap:6px 12px;}
@@ -267,6 +285,31 @@
     </div>
     <button class="tray-clear" id="trayClear" hidden>Vaciar selección</button>
     <div class="tray-list"><ul id="trayList"></ul></div>
+  </div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-bg" id="modalBg"></div>
+  <div class="modal-card">
+    <button class="modal-x" id="modalX" aria-label="Cerrar">&times;</button>
+    <h3>Cuéntanos de tu evento</h3>
+    <p class="modal-sub">Así te damos una cotización más exacta. Todos los campos son opcionales.</p>
+    <label class="fld"><span>Tipo de evento</span>
+      <select id="fTipo">
+        <option value="">Selecciona…</option>
+        <option>Posada</option>
+        <option>Boda</option>
+        <option>Cumpleaños</option>
+        <option>XV años</option>
+        <option>Corporativo / Empresa</option>
+        <option>Reunión / Fiesta</option>
+        <option>Otro</option>
+      </select>
+    </label>
+    <label class="fld"><span>Fecha del evento</span><input type="date" id="fFecha"></label>
+    <label class="fld"><span>Lugar</span><input type="text" id="fLugar" placeholder="Ciudad o dirección"></label>
+    <label class="fld"><span>Número de invitados</span><input type="number" id="fInv" min="1" inputmode="numeric" placeholder="Ej. 50"></label>
+    <button class="wa modal-send" id="modalSend">Enviar por WhatsApp</button>
   </div>
 </div>
 
@@ -402,17 +445,33 @@
   document.getElementById("trayHead").addEventListener("click",function(e){if(e.target.closest("#waSend"))return;tray.classList.toggle("open");});
   trayClear.addEventListener("click",function(){sel.clear();pkg=null;syncButtons();renderPkg();save();updateTray();});
 
+  var modal=document.getElementById("modal");
+  function openModal(){modal.hidden=false;document.body.style.overflow="hidden";}
+  function closeModal(){modal.hidden=true;document.body.style.overflow="";}
+  document.getElementById("modalBg").addEventListener("click",closeModal);
+  document.getElementById("modalX").addEventListener("click",closeModal);
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!modal.hidden)closeModal();});
+
+  function val(id){var el=document.getElementById(id);return el?String(el.value).trim():"";}
+  function fmtDate(v){if(!v)return "";var p=v.split("-");return p.length===3?(p[2]+"/"+p[1]+"/"+p[0]):v;}
   function waLink(){
     var msg="Hola BALAM 🐆, me interesa cotizar su servicio de barra.";
     if(pkg)msg+="\n\nPaquete: "+pkg;
     if(sel.size)msg+="\n\nMis bebidas:\n"+Array.from(sel).map(function(d){return "• "+d;}).join("\n");
+    var det=[],t=val("fTipo"),f=fmtDate(val("fFecha")),l=val("fLugar"),n=val("fInv");
+    if(t)det.push("Tipo de evento: "+t);
+    if(f)det.push("Fecha: "+f);
+    if(l)det.push("Lugar: "+l);
+    if(n)det.push("Invitados: "+n);
+    if(det.length)msg+="\n\nDatos del evento:\n"+det.join("\n");
     msg+="\n\n¿Me pueden dar más información?";
     return "https://wa.me/"+WA+"?text="+encodeURIComponent(msg);
   }
   function go(){window.open(waLink(),"_blank");}
-  document.getElementById("waSend").addEventListener("click",go);
-  var navR=document.getElementById("navReservar");navR.addEventListener("click",go);navR.style.cursor="pointer";
-  var waText=document.getElementById("waText");waText.textContent="+"+WA;waText.href=waLink();
+  document.getElementById("modalSend").addEventListener("click",function(){go();closeModal();});
+  document.getElementById("waSend").addEventListener("click",openModal);
+  var navR=document.getElementById("navReservar");navR.addEventListener("click",openModal);navR.style.cursor="pointer";
+  var waText=document.getElementById("waText");waText.textContent="+"+WA;waText.href="https://wa.me/"+WA;
 
   var search=document.getElementById("search"),nomatch=document.getElementById("nomatch");
   search.addEventListener("input",function(){
