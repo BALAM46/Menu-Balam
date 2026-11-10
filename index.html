@@ -149,7 +149,14 @@
   .tray-clear{background:none;border:none;color:var(--muted);font-size:.78rem;text-decoration:underline;cursor:pointer;padding:8px 16px 4px;}
 
   /* En celular ocultamos los enlaces de ancla pero dejamos visible el botón Reservar */
-  @media (max-width:720px){.navlinks a:not(.reservar){display:none;}.navlinks{gap:0;}}
+  @media (max-width:720px){
+    .navin{flex-wrap:wrap;height:auto;padding-block:9px;gap:6px 12px;}
+    .navlinks{order:3;width:100%;margin-left:0;justify-content:center;gap:6px 16px;flex-wrap:wrap;}
+    .navlinks a{font-size:.8rem;padding:3px 2px;}
+    .reservar{margin-left:auto;}
+    section[id]{scroll-margin-top:calc(88px + env(safe-area-inset-top,0px));}
+    header.hero{min-height:calc(100vh - 88px);min-height:calc(100svh - 88px);}
+  }
   @media (max-width:640px){.paquetes{grid-template-columns:repeat(2,1fr);}}
   @media (max-width:480px){
     .hero p.desc{font-size:.95rem;}
@@ -168,8 +175,8 @@
       <a href="#cocteleria">Coctelería</a>
       <a href="#shots">Shots</a>
       <a href="#mocktails">Mocktails</a>
-      <a class="reservar" id="navReservar">Reservar</a>
     </div>
+    <a class="reservar" id="navReservar">Reservar</a>
   </div>
 </nav>
 
@@ -337,7 +344,7 @@
   PAQUETES.forEach(function(p){
     var d=document.createElement("div");d.className="pkg";d.dataset.tier=p.tier;
     d.innerHTML='<div class="tier">'+p.tier+'</div><ul>'+p.li.map(function(x){return "<li>"+x+"</li>";}).join("")+'</ul><button class="pick">Elegir paquete</button>';
-    d.querySelector(".pick").addEventListener("click",function(){pkg=(pkg===p.tier)?null:p.tier;renderPkg();save();updateTray();});
+    d.querySelector(".pick").addEventListener("click",function(){var picking=(pkg!==p.tier);pkg=picking?p.tier:null;renderPkg();save();updateTray();if(picking){var cc=document.getElementById("cocteleria");if(cc)cc.scrollIntoView({behavior:"smooth"});}});
     grid.appendChild(d);
   });
   function renderPkg(){
