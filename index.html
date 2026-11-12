@@ -91,6 +91,28 @@
   .pkg.active .pick{background:var(--gold);color:#0d0f0c;font-weight:600;}
   .pkg-note{text-align:center;color:var(--muted);font-size:.84rem;margin-top:22px;max-width:60ch;margin-inline:auto;}
 
+  /* ---- JARRAS (temporada) ---- */
+  #jarras{background:linear-gradient(180deg,var(--bg2),var(--bg));border-bottom:1px solid var(--line);}
+  .jbuilder{border:1px solid var(--line);border-radius:14px;padding:20px;background:rgba(24,27,18,.5);}
+  .jstep{margin-bottom:18px;}
+  .jstep-label{font-family:var(--sans);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  .jchips{display:flex;flex-wrap:wrap;gap:10px;}
+  .jchip{font-family:var(--sans);font-size:.9rem;color:var(--cream);background:rgba(13,15,12,.5);border:1px solid var(--line);
+    border-radius:999px;padding:10px 16px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:baseline;gap:6px;}
+  .jchip small{color:var(--muted);font-size:.72rem;}
+  .jchip:hover{border-color:var(--gold);}
+  .jchip.on{background:var(--gold);color:#0d0f0c;border-color:var(--gold);font-weight:600;}
+  .jchip.on small{color:rgba(13,15,12,.7);}
+  .jadd{margin-top:2px;}
+  .jadd[disabled]{opacity:.4;cursor:not-allowed;}
+  .jlist{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
+  .jitem{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:rgba(20,22,15,.5);}
+  .jitem .jsz{font-family:var(--serif);font-size:1.3rem;color:var(--gold-soft);min-width:58px;}
+  .jitem .jdr{font-family:var(--serif);font-size:1.1rem;color:var(--cream);flex:1;}
+  .jitem .jx{margin-left:auto;background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;line-height:1;padding:0 4px;}
+  .jitem .jx:hover{color:var(--gold);}
+  .jcta{text-align:center;margin-top:20px;}
+
   /* ---- SEARCH ---- */
   .search{display:flex;align-items:center;gap:10px;max-width:420px;margin:0 auto 26px;
     border:1px solid var(--line);border-radius:999px;padding:10px 16px;background:rgba(24,27,18,.5);}
@@ -169,8 +191,8 @@
   /* En celular ocultamos los enlaces de ancla pero dejamos visible el botón Reservar */
   @media (max-width:720px){
     .navin{flex-wrap:wrap;height:auto;padding-block:9px;gap:6px 12px;}
-    .navlinks{order:3;width:100%;margin-left:0;justify-content:center;gap:6px 16px;flex-wrap:wrap;}
-    .navlinks a{font-size:.8rem;padding:3px 2px;}
+    .navlinks{order:3;width:100%;margin-left:0;justify-content:center;gap:6px 13px;flex-wrap:wrap;}
+    .navlinks a{font-size:.75rem;padding:3px 1px;}
     .reservar{margin-left:auto;}
     section[id]{scroll-margin-top:calc(88px + env(safe-area-inset-top,0px));}
     header.hero{min-height:calc(100vh - 88px);min-height:calc(100svh - 88px);}
@@ -189,6 +211,7 @@
   <div class="wrap navin">
     <span class="brand">BA<b>L</b>AM</span>
     <div class="navlinks">
+      <a href="#jarras">Jarras</a>
       <a href="#paquetes">Paquetes</a>
       <a href="#cocteleria">Coctelería</a>
       <a href="#shots">Shots</a>
@@ -211,6 +234,42 @@
     </div>
   </div>
 </header>
+
+<section id="jarras">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="label">Nuevo · Temporada diciembre</div>
+      <h2>Mixología para Posadas y Fin de Año</h2>
+      <div class="note">Arma tus jarras: elige el tamaño y la bebida de cada una</div>
+      <div class="rule"></div>
+    </div>
+    <div class="jbuilder">
+      <div class="jstep">
+        <div class="jstep-label">1 · Tamaño de la jarra</div>
+        <div class="jchips" id="jSizes">
+          <button type="button" class="jchip" data-size="1 L">1 L <small>4 vasos</small></button>
+          <button type="button" class="jchip" data-size="1.9 L">1.9 L <small>6 vasos</small></button>
+          <button type="button" class="jchip" data-size="3.5 L">3.5 L <small>8 vasos</small></button>
+          <button type="button" class="jchip" data-size="10 L">10 L <small>12 vasos</small></button>
+        </div>
+      </div>
+      <div class="jstep">
+        <div class="jstep-label">2 · Bebida</div>
+        <div class="jchips" id="jDrinks">
+          <button type="button" class="jchip" data-drink="Mojito Clásico">Mojito Clásico</button>
+          <button type="button" class="jchip" data-drink="Mojito Frutos Rojos">Mojito Frutos Rojos</button>
+          <button type="button" class="jchip" data-drink="Mojito Maracuyá">Mojito Maracuyá</button>
+          <button type="button" class="jchip" data-drink="Cosmopolitan">Cosmopolitan</button>
+          <button type="button" class="jchip" data-drink="Clericot">Clericot</button>
+        </div>
+      </div>
+      <button type="button" class="btn solid jadd" id="jAdd" disabled>Agregar jarra</button>
+    </div>
+    <div class="jlist" id="jList"></div>
+    <p class="pkg-note">Puedes agregar varias jarras; cada una lleva la bebida que elijas e incluye los vasos personalizados según el tamaño.</p>
+    <div class="jcta"><button class="btn solid" id="jarraCta">Pedir por WhatsApp</button></div>
+  </div>
+</section>
 
 <section id="paquetes">
   <div class="wrap">
@@ -377,9 +436,9 @@
 
   function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 
-  var sel=new Set(), pkg=null;
-  try{var s=JSON.parse(localStorage.getItem("balam")||"{}");(s.sel||[]).forEach(function(d){sel.add(d);});pkg=s.pkg||null;}catch(e){}
-  function save(){try{localStorage.setItem("balam",JSON.stringify({sel:Array.from(sel),pkg:pkg}));}catch(e){}}
+  var sel=new Set(), pkg=null, jarras=[];
+  try{var s=JSON.parse(localStorage.getItem("balam")||"{}");(s.sel||[]).forEach(function(d){sel.add(d);});pkg=s.pkg||null;jarras=Array.isArray(s.jarras)?s.jarras:[];}catch(e){}
+  function save(){try{localStorage.setItem("balam",JSON.stringify({sel:Array.from(sel),pkg:pkg,jarras:jarras}));}catch(e){}}
 
   var grid=document.getElementById("pkgGrid");
   PAQUETES.forEach(function(p){
@@ -458,6 +517,7 @@
     var msg="Hola BALAM 🐆, me interesa cotizar su servicio de barra.";
     if(pkg)msg+="\n\nPaquete: "+pkg;
     if(sel.size)msg+="\n\nMis bebidas:\n"+Array.from(sel).map(function(d){return "• "+d;}).join("\n");
+    if(jarras.length)msg+="\n\nJarras:\n"+jarras.map(function(j){return "• "+j.size+" — "+j.drink;}).join("\n");
     var det=[],t=val("fTipo"),f=fmtDate(val("fFecha")),l=val("fLugar"),n=val("fInv");
     if(t)det.push("Tipo de evento: "+t);
     if(f)det.push("Fecha: "+f);
@@ -471,6 +531,7 @@
   document.getElementById("modalSend").addEventListener("click",function(){go();closeModal();});
   document.getElementById("waSend").addEventListener("click",openModal);
   var navR=document.getElementById("navReservar");navR.addEventListener("click",openModal);navR.style.cursor="pointer";
+  var jc=document.getElementById("jarraCta");if(jc)jc.addEventListener("click",openModal);
   var waText=document.getElementById("waText");waText.textContent="+"+WA;waText.href="https://wa.me/"+WA;
 
   var search=document.getElementById("search"),nomatch=document.getElementById("nomatch");
@@ -487,6 +548,31 @@
     });
     nomatch.style.display=(q&&!any)?"block":"none";
   });
+
+  // ---- Constructor de jarras ----
+  var jSize=null,jDrink=null;
+  var jSizesEl=document.getElementById("jSizes"),jDrinksEl=document.getElementById("jDrinks"),
+      jAddBtn=document.getElementById("jAdd"),jListEl=document.getElementById("jList");
+  function markPick(container,attr,cur){Array.prototype.forEach.call(container.children,function(b){b.classList.toggle("on",b.getAttribute(attr)===cur);});}
+  function updateAdd(){jAddBtn.disabled=!(jSize&&jDrink);}
+  jSizesEl.addEventListener("click",function(e){var b=e.target.closest(".jchip");if(!b)return;jSize=b.getAttribute("data-size");markPick(jSizesEl,"data-size",jSize);updateAdd();});
+  jDrinksEl.addEventListener("click",function(e){var b=e.target.closest(".jchip");if(!b)return;jDrink=b.getAttribute("data-drink");markPick(jDrinksEl,"data-drink",jDrink);updateAdd();});
+  jAddBtn.addEventListener("click",function(){
+    if(!(jSize&&jDrink))return;
+    jarras.push({size:jSize,drink:jDrink});
+    jSize=null;jDrink=null;markPick(jSizesEl,"data-size",null);markPick(jDrinksEl,"data-drink",null);
+    updateAdd();renderJarras();save();
+  });
+  function renderJarras(){
+    jListEl.innerHTML="";
+    jarras.forEach(function(j,i){
+      var d=document.createElement("div");d.className="jitem";
+      d.innerHTML='<span class="jsz">'+esc(j.size)+'</span><span class="jdr">'+esc(j.drink)+'</span><button class="jx" aria-label="Quitar">&times;</button>';
+      d.querySelector(".jx").addEventListener("click",function(){jarras.splice(i,1);renderJarras();save();});
+      jListEl.appendChild(d);
+    });
+  }
+  updateAdd();renderJarras();
 
   syncButtons();renderPkg();updateTray();
 })();
